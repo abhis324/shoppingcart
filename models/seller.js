@@ -8,8 +8,10 @@ const CategorySchema = new Schema({
 const SellerSchema = new Schema({
   //sellerID : {type: String, required: true},
   sellerName: {type: String, required: true},
-  sellermail : {type: String, required: true},
-  sellerCategory: [CategorySchema]
+  sellerMail : {type: String, required: true},
+  sellerPassword: {type: String, required: true},
+  sellerContact: {type: String, required: true}
+  //sellerCategory: [CategorySchema]
 })
 
 const Seller = mongoose.model('seller', SellerSchema)
