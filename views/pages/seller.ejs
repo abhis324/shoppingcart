@@ -1,0 +1,113 @@
+<!-- views/pages/about.ejs -->
+
+<!DOCTYPE html>
+<html lang="en">
+<meta charset="UTF-8">
+<head>
+    <% include ../partials/head %>
+</head>
+<body class="container" style="background : #FFCCFF;">
+  <header>
+      <% include ../partials/header %>
+  </header>
+
+<div class="container">
+  <br><h4>Welcome Seller</h4>
+  <!-- Trigger the modal with a button -->
+  <br>
+  <button type="button" class="btn btn-info btn-md" data-toggle="modal" data-target="#myModal">Add Items</button>
+
+  <!-- Modal -->
+  <div class="modal fade" id="myModal" role="dialog">
+    <div class="modal-dialog">
+
+      <!-- Modal content-->
+      <div class="modal-content">
+        <div class="modal-header">
+          <button type="button" class="close" data-dismiss="modal">&times;</button>
+          <h4 class="modal-title"></h4>
+        </div>
+        <div class="modal-body">
+          <p>Details of item to be added.</p>
+          <form class="needs-validation" method="post" enctype="multipart/form-data">
+              <div class="form-row">
+                <div class="col-md-4 mb-3">
+                  <label for="validationTooltip01">ProductName</label>
+                  <input type="text" class="form-control" id="validationTooltip01" placeholder="First name" required>
+                  <div class="valid-tooltip">
+                    Looks good!
+                  </div>
+                </div>
+                <div class="col-md-4 mb-3">
+                  <label for="prodDesc">ProductDescription</label>
+                  <input type="text" class="form-control" id="prodDesc" placeholder="Last name" required>
+                  <div class="valid-tooltip">
+                    Looks good!
+                  </div>
+                </div>
+                <div class="col-md-4 mb-3">
+                  <label for="file">Upload image</label><br>
+                  <input type="file" name="file" required>
+                </div>
+                <!-- <div class="col-md-4 mb-3">
+                  <label for="validationTooltipUsername">Username</label>
+                  <div class="input-group">
+                    <div class="input-group-prepend">
+                      <span class="input-group-text" id="validationTooltipUsernamePrepend">@</span>
+                    </div>
+                    <input type="text" class="form-control" id="validationTooltipUsername" placeholder="Username" aria-describedby="validationTooltipUsernamePrepend" required>
+                    <div class="invalid-tooltip">
+                      Please choose a unique and valid username.
+                    </div>
+                  </div>
+                </div> -->
+              </div>
+              <div class="form-row">
+                <div class="col-md-3 mb-3">
+                  <label for="prodID">ProductID</label>
+                  <input type="text" class="form-control" id="prodID" placeholder="productID" required>
+                  <div class="invalid-tooltip">
+                    productID
+                  </div>
+                </div>
+                <div class="col-md-6 mb-3">
+                  <label for="price">Price</label>
+                  <input type="text" class="form-control" id="price" placeholder="price" required>
+                  <div class="invalid-tooltip">
+                    Price per unit
+                  </div>
+                </div>
+                <div class="col-md-3 mb-3">
+                  <label for="quantity">Quantity</label>
+                  <input type="text" class="form-control" id="quantity" placeholder="quantity" required>
+                  <div class="invalid-tooltip">
+                    quantity
+                  </div>
+                </div>
+                <div class="col-md-3 mb-3">
+                  <label for="Category">Category</label><br><!--
+                  <input type="text" class="form-control" id="Category" placeholder="Category" required> -->
+                  <select name="category">
+                    <option value="books">Books</option>
+                    <option value="clothes">Clothes</option>
+                    <option value="eatables">Eatables</option>
+                    <option value="electronics">ELectronics</option>
+                  </select>
+                </div>
+              </div>
+              <button class="btn btn-primary" type="submit">Submit form</button>
+            </form>
+        </div>
+        <div class="modal-footer">
+          <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+        </div>
+      </div>
+
+    </div>
+  </div>
+
+</div>
+
+  <% include ../partials/footer %>
+</body>
+</html>

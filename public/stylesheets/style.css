@@ -6,3 +6,12 @@ body {
 a {
   color: #00B7FF;
 }
+
+.footer{
+  display: block;
+  position: fixed;
+  text-align: center;
+  bottom: 0;
+  background: #e3f2fd;
+  width: 100%;
+}

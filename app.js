@@ -3,6 +3,7 @@ var express = require('express');
 var path = require('path');
 var cookieParser = require('cookie-parser');
 var logger = require('morgan');
+var mongoose = require("mongoose")
 
 var indexRouter = require('./routes/index');
 var usersRouter = require('./routes/users');
@@ -18,6 +19,34 @@ app.use(express.json());
 app.use(express.urlencoded({ extended: false }));
 app.use(cookieParser());
 app.use(express.static(path.join(__dirname, 'public')));
+
+//// connection to database section
+
+mongoose.connect('mongodb://admin:admin123@ds119996.mlab.com:19996/shoppingcart',{ useNewUrlParser: true },)
+
+// mongoose.connect('mongodb://localhost/pragyanhackathon1',{ useNewUrlParser: true })
+
+mongoose.connection.once('open',function(){
+
+console.log("Connection is established successfully")
+
+}).on('error',function(error){
+
+	console.log('Connection error',error)
+
+})
+
+//// connection to database done ok 200
+
+/// models imported here
+
+const Seller = require('./models/seller')
+const Customer = require('./models/customer')
+const OrderDetails = require('./models/orderdetails')
+const Orders = require('./models/orders')
+const Product = require('./models/product')
+
+///
 
 app.use('/', indexRouter);
 app.use('/users', usersRouter);
