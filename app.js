@@ -25,6 +25,8 @@ app.use(express.static(path.join(__dirname, 'public')));
 app.use(passport.initialize());
 app.use(passport.session());
 
+//app.use(express.static(__dirname + 'uploads'));
+
 //// connection to database section
 
 mongoose.connect('mongodb://admin:admin123@ds119996.mlab.com:19996/shoppingcart',{ useNewUrlParser: true },)
@@ -40,6 +42,8 @@ console.log("Connection is established successfully")
 	console.log('Connection error',error)
 
 })
+
+//module.exports = mongoose.connection
 
 //// connection to database done ok 200
 
@@ -58,6 +62,7 @@ app.use('/seller', sellersRouter);
 app.use('/customer', customersRouter);
 
 // catch 404 and forward to error handler
+
 app.use(function(req, res, next) {
   next(createError(404));
 });

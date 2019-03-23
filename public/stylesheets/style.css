@@ -7,6 +7,17 @@ a {
   color: #00B7FF;
 }
 
+.productview{
+  color : black;
+  font-family: "Monospace", Times, serif;
+  font-size: 12px;
+  text-align: center;
+}
+
+.bordering{
+
+}
+
 .footer{
   display: block;
   position: fixed;

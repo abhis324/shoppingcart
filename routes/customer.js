@@ -2,13 +2,15 @@ var express = require('express');
 var router = express.Router();
 var bcrypt = require('bcryptjs');
 var Customer = require('../models/customer')
+var Product = require('../models/product')
+
 /* GET users listing. */
 router.get('/', function(req, res, next) {
   res.render('pages/customerlogin');
 });
 
 router.post('/login', (req,res,next) => {
-  res.render('pages/index', {user: req.body.name})
+  res.redirect('/');
 })
 
 router.post('/signup', (req,res,next) => {
