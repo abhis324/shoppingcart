@@ -6,7 +6,35 @@
   <body class="container" style="background : #FFCCFF;">
   <header>
       <% include ../partials/header %>
-  </header>
+  </header><br>
+  <script>
+  var count = 0;
+    function buy(a){
+      if (a.hasChildNodes())
+      {
+        console.log("wow" + a.nodeName)
+        var x = ""
+        var children = a.children;
+        for (var i = 0 ; i < children.length ; ++i)
+        {
+          if (children[i].nodeName == "P")
+          {
+            x += (children[i].textContent) + " ";
+            //console.log(children[i].nodeName)
+          }
+        }
+        let t = confirm("Add the item to cart??\n" + x);
+        if(t)
+        {
+          count+=1;
+          document.getElementById("productinfo").innerHTML = (count+" products in your cart");
+        }
+      }
+      //console.log(document.body.a.childNodes[1].nodeValue);
+      console.log("ok")
+    }
+  </script>
+  <p id="productinfo"></p>
   <br>
 <!-- Page Content -->
 <h5>Welcome <%= user %></h5>
@@ -25,7 +53,7 @@
               <p><%= product.productDescription %></p>
               <p>Price: <%= product.price %></p>
               <p><%= product.category %></p>
-              <button type="button" class="btn btn-primary btn-sm">Buy this</button>
+              <button type="button" class="btn btn-primary btn-sm" onclick="buy(this.parentNode)">Buy this</button>
             </div>
           </i>
     </div>

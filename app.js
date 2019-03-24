@@ -76,6 +76,9 @@ app.use(function(err,req,res,next){
 	req.session.views = 0;
 	//console.log(req.session)
 	}
+	if (!req.session.cart){
+		req.session.cart = []
+	}
 	next();
 })
 // catch 404 and forward to error handler
