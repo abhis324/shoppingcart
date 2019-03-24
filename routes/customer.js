@@ -32,6 +32,7 @@ passport.use(new LocalStrategy(
         return done(null, false, { message: 'Incorrect password.' });
       }
       console.log("all done")
+      req.session.username = username;
       return done(null, user);
     });
   }
@@ -50,6 +51,13 @@ router.get('/', function(req, res, next) {
 // router.get('/login', function(err,req,res,next){
 //   res.
 // })
+var productsInCart = [];
+router.post('/fetchdata', (req,res)=>{
+  console.log(typeof req.body.params.str)
+  var s = req.body.params.str;
+  productsInCart.push(s);
+  res.send(s+ " added successfully")
+})
 
 router.post('/login', passport.authenticate('local', { successRedirect: '/',
                                                     failureRedirect: '/'}));

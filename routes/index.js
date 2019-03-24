@@ -34,9 +34,7 @@ router.get('/', function(req, res, next) {
 }
   findProds().then(function(result,err){
     //res.send(products)
-    if (req.session.user)
-      console.log(req.session.user)
-    res.render('pages/index', {user: "User", products: products});
+    res.render('pages/index', {user: req.session.username, products: products});
   })
   // async function found(){
   //   let promise = await Product.

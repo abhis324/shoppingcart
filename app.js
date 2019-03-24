@@ -47,7 +47,7 @@ app.use(session({
   secret: 'keyboard cat',
   resave: false,
   saveUninitialized: true,
-  cookie: { secure: false, maxAge: 60*60*1000 },
+  cookie: { secure: false, maxAge: 5*60*1000 },
   store: new MongoStore({ mongooseConnection: mongoose.connection })
 }))
 app.use(express.static(path.join(__dirname, 'public')));
@@ -78,6 +78,10 @@ app.use(function(err,req,res,next){
 	}
 	if (!req.session.cart){
 		req.session.cart = []
+	}
+	if (!req.session.username)
+	{
+		req.session.username;
 	}
 	next();
 })

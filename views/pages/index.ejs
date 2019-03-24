@@ -28,6 +28,10 @@
         {
           count+=1;
           document.getElementById("productinfo").innerHTML = (count+" products in your cart");
+          axios.post('/customer/fetchdata', { params: { str : x }} ).then((data)=>{
+            console.log(data.data)
+            alert(data)
+          })
         }
       }
       //console.log(document.body.a.childNodes[1].nodeValue);
