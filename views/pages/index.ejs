@@ -44,17 +44,23 @@
             quantity: quantity
           }
           axios.post('/customer/fetchdata', { params: { obj }} ).then((data)=>{
-
+            // console.log(data)
+            // tobeupdated = data.data.quantity - quantity;
+            // console.log(quantity + " is the quantity")
+            // console.log(ele.children[5].textContent)
+            var temp = parseInt(ele.children[5].textContent.split('Quantity Available: ')[1])
+            // console.log(typeof ele.children[5].textContent.split('Quantity Available: ')[1] )
             var temp = temp- quantity;
-
+            // console.log("temp " + typeof temp)
             if (temp > 0)
             {
               ele.children[5].innerHTML = "<p>Quantity Available: "+temp+"</p>"
+              console.log(ele.children[5].nodeName);
             }
             else
-            {
-              ele.children[5].innerHTML = "<p>Currently Unavailable</p>"
-            }
+              {
+                ele.children[5].innerHTML = "<p>Currently Unavailable</p>"
+              }
           })
         }
       console.log(a)
