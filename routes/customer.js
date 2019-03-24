@@ -4,7 +4,6 @@ var bcrypt = require('bcryptjs');
 var bodyParser = require('body-parser')
 var mongoose = require('mongoose')
 var app = express()
-app.use(flash())
 var passport = require('passport')
 var LocalStrategy = require('passport-local').Strategy;
 
