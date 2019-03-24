@@ -3,9 +3,7 @@ var router = express.Router();
 var bcrypt = require('bcryptjs');
 var bodyParser = require('body-parser')
 var mongoose = require('mongoose')
-var flash = require('connect-flash')
 var app = express()
-app.use(flash())
 var passport = require('passport')
 var LocalStrategy = require('passport-local').Strategy;
 
