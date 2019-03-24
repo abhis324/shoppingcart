@@ -44,8 +44,17 @@
             quantity: quantity
           }
           axios.post('/customer/fetchdata', { params: { obj }} ).then((data)=>{
-            console.log(data)
-            alert(data.data)
+
+            var temp = temp- quantity;
+
+            if (temp > 0)
+            {
+              ele.children[5].innerHTML = "<p>Quantity Available: "+temp+"</p>"
+            }
+            else
+            {
+              ele.children[5].innerHTML = "<p>Currently Unavailable</p>"
+            }
           })
         }
       console.log(a)

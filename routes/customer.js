@@ -88,34 +88,32 @@ router.post('/fetchdata', (req,res)=>{
   async function updated()
   {
     Product.findOne({_id: req.body.params.obj.id }).then(async function (result){
-        console.log("result h" + result);
         result.quantity = result.quantity - req.body.params.obj.quantity;
         await result.save()
-        // result.update(
-        //   {
-        //     $inc: {quantity: -10}
-        //   }
-        // )
-        // a
-        // result.update(
-        //   {
-        //     quantity: 10
-        //   }
-        // )
-        //result.remove()
       console.log("after" + result.quantity)},
         (err)=> {throw err;})
     await Product.findOne({_id: req.body.params.obj.id }).then((result)=>{
-        console.log("result h mila ya nhi " + result);},
         (err)=> {throw err;})
     // promise2.then((res)=>{
     //   return promise;
     // })
   }
+  var products;
+  //console.log(mongoose.connection)
+  //res.send("helloe")
+  async function findProds()
+  {
+    await Product.find({}, function(err, docs) {
+    if (!err){
+        console.log(docs);
+        products = docs;
+        req.session.views = products.length;
+    } else {throw err;}
+});
+}
   saved().then(function(err,result){
     updated().then((res)=> { console.log("updated")})
-    console.log(cartObj);
-    res.send(" added successfully");
+    res.send("saved successfully");
   })
 })
 
