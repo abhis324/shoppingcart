@@ -53,7 +53,7 @@ var sess = {
 
 if (app.get('env') === 'production') {
   app.set('trust proxy', 1) // trust first proxy
-  session.cookie.secure = true // serve secure cookies
+  sess.cookie.secure = true // serve secure cookies
 }
 app.use(session(sess))
 app.use(express.static(path.join(__dirname, 'public')));
