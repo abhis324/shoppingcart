@@ -74,7 +74,7 @@ app.use(function(err,req,res,next){
 	res.locals.session = req.session
 	if (!req.session.views) {
 	req.session.views = 0;
-	console.log(req.session)
+	//console.log(req.session)
 	}
 	next();
 })

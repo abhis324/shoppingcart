@@ -18,6 +18,7 @@ var Product = require('../models/product')
 
 router.get('/', function(req, res, next) {
   var products;
+  //console.log(mongoose.connection)
   //res.send("helloe")
   async function findProds()
   {
@@ -33,6 +34,8 @@ router.get('/', function(req, res, next) {
 }
   findProds().then(function(result,err){
     //res.send(products)
+    if (req.session.user)
+      console.log(req.session.user)
     res.render('pages/index', {user: "User", products: products});
   })
   // async function found(){
