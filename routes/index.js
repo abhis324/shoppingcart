@@ -24,7 +24,7 @@ router.get('/', function(req, res, next) {
   {
     await Product.find({}, function(err, docs) {
     if (!err){
-        //console.log(docs);
+        console.log(docs);
         products = docs;
         req.session.views = products.length;
         console.log(req.session)
@@ -34,6 +34,7 @@ router.get('/', function(req, res, next) {
 }
   findProds().then(function(result,err){
     //res.send(products)
+
     res.render('pages/index', {user: req.session.username, products: products});
   })
   // async function found(){

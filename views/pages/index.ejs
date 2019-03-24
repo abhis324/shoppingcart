@@ -10,29 +10,45 @@
   <script>
   var count = 0;
     function buy(a){
-      if (a.hasChildNodes())
+      let quantity = prompt("How many do u want?", 1);
+      typeof quantity
+      var ele = document.getElementById(a).children[0].children[1];
+      console.log(ele.nodeName)
+      if (ele.hasChildNodes())
       {
-        console.log("wow" + a.nodeName)
-        var x = ""
-        var children = a.children;
+        //console.log("wow" + a.nodeName + a.id)
+        //console.log(a.id)
+        var x = []
+        var children = ele.children;
         for (var i = 0 ; i < children.length ; ++i)
         {
           if (children[i].nodeName == "P")
           {
-            x += (children[i].textContent) + " ";
-            //console.log(children[i].nodeName)
+            x.push(children[i].textContent);
+            console.log(children[i].nodeName)
           }
         }
+        // console.log(x[2])
+        // console.log(x[2].split('Price: '))
         let t = confirm("Add the item to cart??\n" + x);
         if(t)
         {
           count+=1;
           document.getElementById("productinfo").innerHTML = (count+" products in your cart");
-          axios.post('/customer/fetchdata', { params: { str : x }} ).then((data)=>{
-            console.log(data.data)
-            alert(data)
+          var obj = {
+            id: a,
+            productName : x[0],
+            productDescription: x[1],
+            price: x[2].split('Price: ')[1],
+            category : x[3],
+            quantity: quantity
+          }
+          axios.post('/customer/fetchdata', { params: { obj }} ).then((data)=>{
+            console.log(data)
+            alert(data.data)
           })
         }
+      console.log(a)
       }
       //console.log(document.body.a.childNodes[1].nodeValue);
       console.log("ok")
@@ -49,7 +65,7 @@
 
   <div class="row text-center text-lg-left">
     <% products.forEach(function(product){ %>
-    <div class="col-lg-3 col-md-4 col-6">
+    <div class="col-lg-3 col-md-4 col-6" id="<%= product._id.toString() %>">
       <i class="d-block mb-4 h-100">
             <img class="img-fluid img-thumbnail" src="/images/<%= product.imagePath %>">
             <div class="productview">
@@ -57,7 +73,12 @@
               <p><%= product.productDescription %></p>
               <p>Price: <%= product.price %></p>
               <p><%= product.category %></p>
-              <button type="button" class="btn btn-primary btn-sm" onclick="buy(this.parentNode)">Buy this</button>
+              <%if ( product.quantity > 0 ) { %>
+                <p>Quantity Available: <%= product.quantity %></p>
+                <button type="button" class="btn btn-primary btn-sm" onclick="buy(this.parentNode.parentNode.parentNode.id)">Buy this</button>
+              <% } else{ %>
+                  <p>Currently Unavailable</p>
+              <% } %>
             </div>
           </i>
     </div>

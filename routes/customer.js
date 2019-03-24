@@ -11,6 +11,7 @@ var LocalStrategy = require('passport-local').Strategy;
 
 var Customer = require('../models/customer')
 var Product = require('../models/product')
+var Cart = require('../models/cart')
 
 app.use(bodyParser.urlencoded({ extended: false}));
 app.use(bodyParser.json())
@@ -51,12 +52,73 @@ router.get('/', function(req, res, next) {
 // router.get('/login', function(err,req,res,next){
 //   res.
 // })
-var productsInCart = [];
+//var productsInCart = [];
+
+String.prototype.toObjectId = function() {
+var ObjectId = (require('mongoose').Types.ObjectId);
+return new ObjectId(this.toString());
+};
+
 router.post('/fetchdata', (req,res)=>{
-  console.log(typeof req.body.params.str)
-  var s = req.body.params.str;
-  productsInCart.push(s);
-  res.send(s+ " added successfully")
+
+  console.log(req.body.params.obj)
+
+  var cartObj;
+
+  async function saved()
+  {
+    cartObj = new Cart({
+      cartproductid: req.body.params.obj.id,
+      productName: req.body.params.obj.productName,
+      productDescription: req.body.params.obj.productDescription,
+      price: Number(req.body.params.obj.price),
+      category: req.body.params.obj.category,
+      quantity: Number(req.body.params.obj.quantity)
+    })
+
+    let promise = await cartObj.save(function(err){
+  					if (err)
+  						throw err
+  					else
+            {
+              //resolve(1);
+              console.log("customer saved successfully")
+            }
+  				})
+    return promise;
+  }
+  async function updated()
+  {
+    Product.findOne({_id: req.body.params.obj.id }).then(async function (result){
+        console.log("result h" + result);
+        result.quantity = result.quantity - req.body.params.obj.quantity + 1;
+        await result.save()
+        // result.update(
+        //   {
+        //     $inc: {quantity: -10}
+        //   }
+        // )
+        // a
+        // result.update(
+        //   {
+        //     quantity: 10
+        //   }
+        // )
+        //result.remove()
+      console.log("after" + result.quantity)},
+        (err)=> {throw err;})
+    await Product.findOne({_id: req.body.params.obj.id }).then((result)=>{
+        console.log("result h mila ya nhi " + result);},
+        (err)=> {throw err;})
+    // promise2.then((res)=>{
+    //   return promise;
+    // })
+  }
+  saved().then(function(err,result){
+    updated().then((res)=> { console.log("updated")})
+    console.log(cartObj);
+    res.send(" added successfully");
+  })
 })
 
 router.post('/login', passport.authenticate('local', { successRedirect: '/',
