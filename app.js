@@ -50,6 +50,10 @@ app.use(session({
   cookie: { secure: false, maxAge: 5*60*1000 },
   store: new MongoStore({ mongooseConnection: mongoose.connection })
 }))
+if (app.get('env') === 'production') {
+  app.set('trust proxy', 1) // trust first proxy
+  sess.cookie.secure = true // serve secure cookies
+}
 app.use(express.static(path.join(__dirname, 'public')));
 app.use(passport.initialize());
 app.use(passport.session());

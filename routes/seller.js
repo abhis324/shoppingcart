@@ -86,7 +86,7 @@ router.post('/signup', (req,res,next) => {
 
     				// console.log(req.body)
     				// console.log(hash)
-    var newCustomer;
+    var newSeller;
 		async function saved()
     {
         // console.log(newCustomer)
