@@ -52,7 +52,7 @@ app.use(session({
 }))
 if (app.get('env') === 'production') {
   app.set('trust proxy', 1) // trust first proxy
-  sess.cookie.secure = true // serve secure cookies
+  session.cookie.secure = true // serve secure cookies
 }
 app.use(express.static(path.join(__dirname, 'public')));
 app.use(passport.initialize());
