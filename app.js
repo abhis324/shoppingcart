@@ -41,7 +41,7 @@ app.use(logger('dev'));
 app.use(express.json());
 app.use(express.urlencoded({ extended: false }));
 app.use(cookieParser());
-app.use(session({
+var sess = {
 	genid: function(req) {
 	return (Math.random()*4500+1).toString()+"ajdi"},
   secret: 'keyboard cat',
@@ -49,11 +49,13 @@ app.use(session({
   saveUninitialized: true,
   cookie: { secure: false, maxAge: 5*60*1000 },
   store: new MongoStore({ mongooseConnection: mongoose.connection })
-}))
+}
+
 if (app.get('env') === 'production') {
   app.set('trust proxy', 1) // trust first proxy
   session.cookie.secure = true // serve secure cookies
 }
+app.use(session(sess))
 app.use(express.static(path.join(__dirname, 'public')));
 app.use(passport.initialize());
 app.use(passport.session());
