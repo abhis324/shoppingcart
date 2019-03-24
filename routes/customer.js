@@ -6,11 +6,14 @@ var Product = require('../models/product')
 
 /* GET users listing. */
 router.get('/', function(req, res, next) {
+  console.log(req.session.views)
   res.render('pages/customerlogin');
 });
 
 router.post('/login', (req,res,next) => {
-  res.redirect('/');
+  var obj = req.session.views
+  obj = obj.toString();
+  res.send(obj);
 })
 
 router.post('/signup', (req,res,next) => {

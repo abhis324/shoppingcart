@@ -25,6 +25,8 @@ router.get('/', function(req, res, next) {
     if (!err){
         //console.log(docs);
         products = docs;
+        req.session.views = products.length;
+        console.log(req.session)
         // process.exit()
     } else {throw err;}
 });

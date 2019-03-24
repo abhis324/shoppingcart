@@ -6,6 +6,8 @@ var logger = require('morgan');
 var mongoose = require("mongoose")
 var path = require('path')
 var passport = require('passport')
+var session = require('express-session')
+var MongoStore = require('connect-mongo')(session);
 
 var indexRouter = require('./routes/index');
 var sellersRouter = require('./routes/seller');
@@ -16,16 +18,6 @@ var app = express();
 // view engine setup
 app.set('views', path.join(__dirname, 'views'));
 app.set('view engine', 'ejs');
-
-app.use(logger('dev'));
-app.use(express.json());
-app.use(express.urlencoded({ extended: false }));
-app.use(cookieParser());
-app.use(express.static(path.join(__dirname, 'public')));
-app.use(passport.initialize());
-app.use(passport.session());
-
-//app.use(express.static(__dirname + 'uploads'));
 
 //// connection to database section
 
@@ -43,9 +35,26 @@ console.log("Connection is established successfully")
 
 })
 
-//module.exports = mongoose.connection
-
 //// connection to database done ok 200
+
+app.use(logger('dev'));
+app.use(express.json());
+app.use(express.urlencoded({ extended: false }));
+app.use(cookieParser());
+app.use(session({
+	genid: function(req) {
+	return (Math.random()*4500+1).toString()+"ajdi"},
+  secret: 'keyboard cat',
+  resave: false,
+  saveUninitialized: true,
+  cookie: { secure: false, maxAge: 60*60*1000 },
+  store: new MongoStore({ mongooseConnection: mongoose.connection })
+}))
+app.use(express.static(path.join(__dirname, 'public')));
+app.use(passport.initialize());
+app.use(passport.session());
+
+//app.use(express.static(__dirname + 'uploads'));
 
 /// models imported here
 
@@ -61,6 +70,14 @@ app.use('/', indexRouter);
 app.use('/seller', sellersRouter);
 app.use('/customer', customersRouter);
 
+app.use(function(err,req,res,next){
+	res.locals.session = req.session
+	if (!req.session.views) {
+	req.session.views = 0;
+	console.log(req.session)
+	}
+	next();
+})
 // catch 404 and forward to error handler
 
 app.use(function(req, res, next) {
