@@ -77,3 +77,7 @@
     //res.send(products)
     res.render('pages/index', {user: req.body.name, products: products});
   })
+
+  <%if (<%= product.quantity %> >= 0) { %>
+    <p>Quantity Available: <%= product.quantity %></p>
+  <% } %>

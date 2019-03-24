@@ -91,7 +91,7 @@ router.post('/fetchdata', (req,res)=>{
   {
     Product.findOne({_id: req.body.params.obj.id }).then(async function (result){
         console.log("result h" + result);
-        result.quantity = result.quantity - req.body.params.obj.quantity + 1;
+        result.quantity = result.quantity - req.body.params.obj.quantity;
         await result.save()
         // result.update(
         //   {
