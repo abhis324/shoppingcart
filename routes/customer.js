@@ -92,8 +92,8 @@ router.post('/fetchdata', (req,res)=>{
         await result.save()
       console.log("after" + result.quantity)},
         (err)=> {throw err;})
-    await Product.findOne({_id: req.body.params.obj.id }).then((result)=>{
-        (err)=> {throw err;})
+    // await Product.findOne({_id: req.body.params.obj.id }).then((result)=>{},
+    //     (err)=> {throw err;})
     // promise2.then((res)=>{
     //   return promise;
     // })
