@@ -45,7 +45,7 @@ var sess = {
 	genid: function(req) {
 	return (Math.random()*4500+1).toString()+"ajdi"},
   secret: 'keyboard cat',
-  resave: false,
+  resave: true,
   saveUninitialized: true,
   cookie: { secure: false, maxAge: 5*60*1000 },
   store: new MongoStore({ mongooseConnection: mongoose.connection })
@@ -59,6 +59,14 @@ app.use(session(sess))
 app.use(express.static(path.join(__dirname, 'public')));
 app.use(passport.initialize());
 app.use(passport.session());
+
+passport.serializeUser(function(user, done) {
+  done(null, user);
+});
+
+passport.deserializeUser(function(user, done) {
+  done(null, user);
+});
 
 //app.use(express.static(__dirname + 'uploads'));
 
@@ -87,7 +95,7 @@ app.use(function(err,req,res,next){
 	}
 	if (!req.session.username)
 	{
-		req.session.username;
+		req.session.username = {name:"User", type:"User"}
 	}
 	next();
 })

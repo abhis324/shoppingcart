@@ -14,24 +14,25 @@ var Cart = require('../models/cart')
 app.use(bodyParser.urlencoded({ extended: false}));
 app.use(bodyParser.json())
 
-app.use(passport.initialize());
-app.use(passport.session());
+// app.use(passport.initialize());
+// app.use(passport.session());
 
 passport.use(new LocalStrategy(
   function(username, password, done) {
     console.log("i m in")
     Customer.findOne({ username: username }, function(err, user) {
-      console.log(user)
+      //console.log(user)
       if (err) { console.log("err region") ; return done(err); }
       if (!user) {
         console.log("user region")
         return done(null, false, { message: 'Incorrect username.' });
       }
-      if (user.password != password) {
+      if(bcrypt.compareSync(password, user.password) == false){
+        console.log("password region")
+        console.log(user.password + " " + password)
         return done(null, false, { message: 'Incorrect password.' });
       }
       console.log("all done")
-      req.session.username = username;
       return done(null, user);
     });
   }
@@ -41,14 +42,15 @@ passport.use(new LocalStrategy(
 
 /* GET users listing. */
 router.get('/', function(req, res, next) {
-  console.log(req.session.views + "dfdd")
-  //console.log(passport.session)
+  console.log(req.session.username + "dfdd")
+  console.log(req.session.username.name)
   //console.log(mongoose.connection)
   res.render('pages/customerlogin');
 });
 
 // router.get('/login', function(err,req,res,next){
-//   res.
+//   res.send("fd")
+//   res.render('/pages/customerlogin')
 // })
 //var productsInCart = [];
 
@@ -117,49 +119,83 @@ router.post('/fetchdata', (req,res)=>{
   })
 })
 
-router.post('/login', passport.authenticate('local', { successRedirect: '/',
-                                                    failureRedirect: '/'}));
+// router.post('/login', passport.authenticate('local'),  function(req, res) {
+//     // If this function gets called, authentication was successful.
+//     // `req.user` contains the authenticated user.
+//     console.log(req.body.username)
+//     res.redirect('/');
+//   });
 
-router.post('/signup', (req,res,next) => {
+router.post('/login', function(req, res, next) {
+  passport.authenticate('local', function(err, user, info) {
+    console.log("wow")
+    if (err) { console.log("err woww ") ; return next(err); }
+    if (!user) { return console.log("user woww ");res.redirect('/customer'); }
+    req.logIn(user, function(err) {
+      if (err) {console.log("errrrr wwwww "+ err); return next(err); }
+      console.log("kaha h error" + user)
+      return res.redirect('/');
+    });
+  })(req, res, next);
+});
 
-  bcrypt.genSalt(10, function(err, salt) {
+router.post('/signup', async (req,res,next) => {
 
-    		bcrypt.hash(req.body.password, salt, function(err, hash) {
+    		bcrypt.hash(req.body.password, 10, function(err, hash) {
 
-    				// console.log(req.body)
-    				// console.log(hash)
-    var newCustomer;
-		async function saved()
-    {
-        // console.log(newCustomer)
-        //console.log("g m h" + x + p)
-        newCustomer = new Customer({
-              username : req.body.name,
-              address1: req.body.address1,
-              address2: req.body.address2,
-              district : req.body.district,
-              state : req.body.state,
-              email: req.body.email,
-              password : hash,
-              pincode: req.body.pincode,
-              contact: req.body.contact
-       })
+    				console.log(hash+" signup " + req.body.password)
+            var newCustomer;
+        		async function saved()
+            {
+                // console.log(newCustomer)
+                //console.log("g m h" + x + p)
+                newCustomer = new Customer({
+                      username : req.body.name,
+                      address1: req.body.address1,
+                      address2: req.body.address2,
+                      district : req.body.district,
+                      state : req.body.state,
+                      email: req.body.email,
+                      password : hash,
+                      pincode: req.body.pincode,
+                      contact: req.body.contact
+               })
 
-        let promise = await newCustomer.save(function(err){
-	    					if (err)
-	    						throw err
-	    					else
-                {
-                  //resolve(1);
-                  console.log("customer saved successfully")
-                }
-	    				})
-        return promise;
-    }
-        saved().then(function(result,err){
-          res.render('pages/index', {user: req.body.name});
-        }).catch(err => console.log("error"));
-      })
-    })})
+                let promise = await newCustomer.save(function(err){
+        	    					if (err)
+        	    						throw err
+        	    					else
+                        {
+                          //resolve(1);
+                          console.log("customer saved successfully")
+                        }
+        	    				})
+                return promise;
+            }
+            var products;
+            //console.log(mongoose.connection)
+            //res.send("helloe")
+            async function findProds()
+            {
+              await Product.find({}, function(err, docs) {
+              if (!err){
+                  console.log(docs);
+                  products = docs;
+                  req.session.views = products.length;
+              } else {throw err;}
+            });
+            }
+                saved().then((err,result)=>{
+                  findProds().then((err,result)=>{
+                      console.log("products yeha h " + products)
+                      // req.session.username.name = req.body.name;
+                      // console.log(req.session);
+                      res.redirect('/')
+
+                      res.render('pages/index', {user: req.body.name, products: products});
+                  })
+                });
+              })
+    })
 
 module.exports = router;

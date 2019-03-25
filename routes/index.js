@@ -4,6 +4,7 @@ var path = require('path')
 var app = express()
 var mongoose = require('mongoose')
 var async = require('async')
+var passport = require('passport')
 var Product = require('../models/product')
 
 // process.env.PWD = process.cwd()
@@ -34,8 +35,20 @@ router.get('/', function(req, res, next) {
 }
   findProds().then(function(result,err){
     //res.send(products)
-
-    res.render('pages/index', {user: req.session.username, products: products});
+    // if (!passport.user)
+    // {
+    //     res.render('pages/index', {user: passport.user.username, products: products});
+    // }
+    // else {
+    if (req.session.passport)
+    {
+      console.log(req.session.passport.user)
+        res.render('pages/index', {user: req.session.passport.user.username, products: products});
+    }
+    else {
+      console.log("no passport")
+      res.render('pages/index', {user: "User", products: products});
+    }
   })
   // async function found(){
   //   let promise = await Product.
