@@ -42,9 +42,6 @@ passport.use(new LocalStrategy(
 
 /* GET users listing. */
 router.get('/', function(req, res, next) {
-  console.log(req.session.username + "dfdd")
-  console.log(req.session.username.name)
-  //console.log(mongoose.connection)
   res.render('pages/customerlogin');
 });
 
