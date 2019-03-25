@@ -46,7 +46,7 @@ var sess = {
 	genid: function(req) {
 	return (Math.random()*4500+1).toString()+"ajdi"},
   secret: 'keyboard cat',
-  resave: false,
+  resave: true,
   saveUninitialized: true,
   cookie: { secure: false, maxAge: 5*60*1000 },
   store: new MongoStore({ mongooseConnection: mongoose.connection })
@@ -56,6 +56,7 @@ if (app.get('env') === 'production') {
   app.set('trust proxy', 1) // trust first proxy
   sess.cookie.secure = true // serve secure cookies
 }
+
 app.use(session(sess))
 app.use(express.static(path.join(__dirname, 'public')));
 app.use(passport.initialize());
