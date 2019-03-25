@@ -116,7 +116,7 @@ router.post('/login', function(req, res, next) {
   passport.authenticate('local', function(err, user, info) {
     console.log("wow")
     if (err) { console.log("err woww ") ; return next(err); }
-    if (!user) { return console.log("user woww ");res.redirect('/customer'); }
+    if (!user) { return res.redirect('/customer'); }
     req.logIn(user, function(err) {
       if (err) {console.log("errrrr wwwww "+ err); return next(err); }
       console.log("kaha h error" + user)
