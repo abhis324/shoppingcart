@@ -47,7 +47,7 @@ var sess = {
   secret: 'keyboard cat',
   resave: true,
   saveUninitialized: true,
-  cookie: { secure: false, maxAge: 5*60*1000 },
+  cookie: { secure: true, maxAge: 5*60*1000 },
   store: new MongoStore({ mongooseConnection: mongoose.connection })
 }
 
