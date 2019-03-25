@@ -14,6 +14,11 @@
       var ele = document.getElementById(a).children[0].children[1];
       var maxAmount = parseInt(ele.children[5].textContent.split('Quantity Available: ')[1])
       //console.log(tty)
+      if (quantity == 0)
+      {
+        alert("just say u don't want it")
+        return;
+      }
       if (quantity > maxAmount)
       {
         alert('u cannot buy more than availability')

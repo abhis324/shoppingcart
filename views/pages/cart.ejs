@@ -1,0 +1,33 @@
+<!DOCTYPE html>
+<html lang="en" >
+<head>
+    <% include ../partials/head %>
+</head>
+  <body class="container" style="background : #FFCCFF;">
+  <br>
+  <div class="container">
+
+    <h4 class="font-weight-light text-center text-lg-left mt-4 mb-0">The items in your cart are:</h4>
+    <hr class="mt-2 mb-5">
+
+    <div class="row text-center text-lg-left">
+      <% products.forEach(function(product){ %>
+      <div class="col-lg-3 col-md-4 col-6" id="<%= product._id.toString() %>">
+        <i class="d-block mb-4 h-100">
+              <img class="img-fluid img-thumbnail" src="/images/<%= product.imagePath %>">
+              <div class="productview">
+                <br><p><%= product.productName %></p>
+                <p><%= product.productDescription %></p>
+                <p>Price: <%= product.price %></p>
+                <p><%= product.category %></p>
+                <p>Quantity: 1</p>
+              </div>
+            </i>
+      </div>
+    <% })%>
+  </div>
+  <div><h6>Your total price is : <%= totalPrice %></h6></div>
+  <button type="button" class="btn btn-success btn-md">Proceed to checkout</button>
+ </div>
+</body>
+</html>

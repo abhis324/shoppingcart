@@ -86,3 +86,64 @@
   .then(function(result,err){
   res.render('pages/index', {user: req.body.name});
   }).catch(err => console.log("error"))
+
+
+  async function f()
+  {
+    let promise = new Promise(function(resolve,reject){
+        p();
+    }).then((err,result)=>{if (err) throw err;else resolve(1)});
+
+    await promise
+    return promise
+  }
+  f().then(function(err,result){
+    console.log(prods.length)
+    res.render('pages/index', {user : "User", products: prods})
+  })
+
+  resolve(1)}});
+  t.then(function(err,result){if (err) throw err;console.log("fdf");res.send("how")})
+  // await t;
+  // console.log(45);
+  // res.send("fd")
+
+
+
+<div class="container">
+
+    <h4 class="font-weight-light text-center text-lg-left mt-4 mb-0">Products available</h4>
+    <hr class="mt-2 mb-5">
+
+    <div class="row text-center text-lg-left">
+      <% products.forEach(function(product){ %>
+      <div class="col-lg-3 col-md-4 col-6" id="<%= product._id.toString() %>">
+        <i class="d-block mb-4 h-100">
+              <img class="img-fluid img-thumbnail" src="/images/<%= product.imagePath %>">
+              <div class="productview">
+                <br><p><%= product.productName %></p>
+                <p><%= product.productDescription %></p>
+                <p>Price: <%= product.price %></p>
+                <p><%= product.category %></p>
+                <p>Quantity: 1</p>
+                <% } %>
+              </div>
+            </i>
+      </div>
+    <% })%>
+  </div>
+ </div>
+
+ <div class="col-lg-3 col-md-4 col-6" id="<%= product._id.toString() %>">
+   <i class="d-block mb-4 h-100">
+         <img class="img-fluid img-thumbnail" src="/images/<%= product.imagePath %>">
+         <div class="productview">
+           <br><p><%= product.productName %></p>
+           <p><%= product.productDescription %></p>
+           <p>Price: <%= product.price %></p>
+           <p><%= product.category %></p>
+           <p>Quantity: 1</p>
+           <% } %>
+         </div>
+       </i>
+ </div>

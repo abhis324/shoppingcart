@@ -12,6 +12,7 @@ var MongoStore = require('connect-mongo')(session);
 var indexRouter = require('./routes/index');
 var sellersRouter = require('./routes/seller');
 var customersRouter = require('./routes/customer');
+var cartRouter = require('./routes/cart')
 
 var app = express();
 
@@ -83,15 +84,12 @@ const Product = require('./models/product')
 app.use('/', indexRouter);
 app.use('/seller', sellersRouter);
 app.use('/customer', customersRouter);
+app.use('/cart', cartRouter);
 
 app.use(function(err,req,res,next){
 	res.locals.session = req.session
-	if (!req.session.views) {
-	req.session.views = 0;
-	//console.log(req.session)
-	}
 	if (!req.session.cart){
-		req.session.cart = []
+		req.session.cart = [];
 	}
 	if (!req.session.username)
 	{

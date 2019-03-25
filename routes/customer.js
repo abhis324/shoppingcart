@@ -61,14 +61,25 @@ router.post('/fetchdata', (req,res)=>{
       category: req.body.params.obj.category,
       quantity: Number(req.body.params.obj.quantity)
     })
-
     let promise = await cartObj.save(function(err){
   					if (err)
   						throw err
   					else
             {
               //resolve(1);
-              console.log("customer saved successfully")
+              if (req.session.cart)
+              {
+                req.session.cart.push(req.body.params.obj.id)
+                console.log("ye wala " + req.session.cart)
+                req.session.save(function(err){if(err) throw err;})
+              }
+              else {
+                req.session.cart = [];
+                req.session.cart.push(req.body.params.obj.id);
+                console.log("pehli baar")
+                req.session.save(function(err){if(err) throw err;})
+              }
+              console.log("added to cart successfully"+req.session.cart)
             }
   				})
     return promise;
