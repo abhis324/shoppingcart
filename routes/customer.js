@@ -48,17 +48,6 @@ router.get('/', function(req, res, next) {
   res.render('pages/customerlogin');
 });
 
-// router.get('/login', function(err,req,res,next){
-//   res.send("fd")
-//   res.render('/pages/customerlogin')
-// })
-//var productsInCart = [];
-
-String.prototype.toObjectId = function() {
-var ObjectId = (require('mongoose').Types.ObjectId);
-return new ObjectId(this.toString());
-};
-
 router.post('/fetchdata', (req,res)=>{
 
   console.log(req.body.params.obj)
