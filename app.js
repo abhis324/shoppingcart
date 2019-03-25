@@ -46,7 +46,7 @@ var sess = {
 	genid: function(req) {
 	return (Math.random()*4500+1).toString()+"ajdi"},
   secret: 'keyboard cat',
-  resave: true,
+  resave: false,
   saveUninitialized: true,
   cookie: { secure: false, maxAge: 5*60*1000 },
   store: new MongoStore({ mongooseConnection: mongoose.connection })

@@ -28,17 +28,10 @@ router.get('/', (req,res)=> {
           if (prods.length == x.length)
           {return resolve(1)};
         })
-        console.log(prods.length, "itna lenght h")
       }
-      console.log(a + "g m aa gya ")
-
-      //resolve(1)
     })
     console.log(promise)
     return promise
-    promise.then(function(result){ console.log("now", promise)})
-    console.log("fdofdj")
-    return 1
   }catch(err){console.log(err);error(err)}}
 //   var promise1 = g().resolve(1)
 //   promise1.then(function(value) {
@@ -61,7 +54,7 @@ g().then((val) => { console.log("fulfilled:", val, prods.length) ; res.render('p
   // f().then((result)=>{console.log(prods.length + "here is the prods");res.send(prods)})
 }
   else {
-    res.send("woww")
+    res.send("You have one product in cart..try adding some more and come back and see")
   }
   // }
   // await displayed()
