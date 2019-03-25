@@ -11,8 +11,14 @@
   var count = 0;
     function buy(a){
       quantity = prompt("How many do u want?", 1);
-      typeof quantity
       var ele = document.getElementById(a).children[0].children[1];
+      var maxAmount = parseInt(ele.children[5].textContent.split('Quantity Available: ')[1])
+      //console.log(tty)
+      if (quantity > maxAmount)
+      {
+        alert('u cannot buy more than availability')
+        return;
+      }
       console.log(ele.nodeName)
       if (ele.hasChildNodes())
       {
