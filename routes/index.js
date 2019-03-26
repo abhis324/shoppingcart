@@ -17,6 +17,13 @@ var Product = require('../models/product')
 
 //var products = []
 
+router.get('/ordered', (req,res)=>{
+  res.redirect('/')
+  req.session.destroy(function(err,result){
+    if (err) throw err;
+  })
+})
+
 router.get('/', function(req, res, next) {
   var products;
   //console.log(mongoose.connection)

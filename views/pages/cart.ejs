@@ -6,7 +6,7 @@
   <body class="container" style="background : #FFCCFF;">
   <br>
   <div class="container">
-
+    <h6><%= user %></h6>
     <h4 class="font-weight-light text-center text-lg-left mt-4 mb-0">The items in your cart are:</h4>
     <hr class="mt-2 mb-5">
 
@@ -27,7 +27,14 @@
     <% })%>
   </div>
   <div><h6>Your total price is : <%= totalPrice %></h6></div>
-  <button type="button" class="btn btn-success btn-md">Proceed to checkout</button>
+  <a href="/ordered"><button type="button" class="btn btn-success btn-md" onclick="ordered()" id="order">Proceed to checkout</button></a>
  </div>
+ <script>
+    function ordered()
+    {
+      alert("Your order is successfully placed!!Check your mail account for more details")
+      document.getElementById("order").remove();
+    }
+ </script>
 </body>
 </html>

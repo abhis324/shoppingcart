@@ -7,15 +7,38 @@ var async = require('async')
 var multer = require('multer')
 var upload = multer({dest: 'public/images/'})
 var app = express();
-
+var passport = require('passport')
+var LocalStrategy = require('passport-local').Strategy;
 
 //var upload = multer({limits: {fileSize: 2000000 },dest:'/uploads/'})
 
-//var Seller = require('../models/seller')
+var Seller = require('../models/seller')
 var Product = require('../models/product')
 
 app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({extended: false}));
+
+passport.use(new LocalStrategy(
+  function(username, password, done) {
+    console.log("i m in")
+    Seller.findOne({ username: username }, function(err, user) {
+      //console.log(user)
+      if (err) { console.log("err region") ; return done(err); }
+      if (!user) {
+        console.log("user region")
+        return done(null, false, { message: 'Incorrect username.' });
+      }
+      if(bcrypt.compareSync(password, user.password) == false){
+        console.log("password region")
+        console.log(user.password + " " + password)
+        return done(null, false, { message: 'Incorrect password.' });
+      }
+      console.log("all done")
+      return done(null, user);
+    });
+  }
+));
+
 
 /* GET home page. */
 
@@ -23,9 +46,18 @@ router.get('/', function(req, res, next) {
   res.render('pages/sellerlogin');
 });
 
-router.post('/login', (req,res,next) => {
-  res.render('pages/seller', {user: req.body.name});
-})
+router.post('/login', function(req, res, next) {
+  passport.authenticate('local', function(err, user, info) {
+    console.log("wow")
+    if (err) { console.log("err woww ") ; return next(err); }
+    if (!user) { return res.redirect('/seller'); }
+    req.logIn(user, function(err) {
+      if (err) {console.log("errrrr wwwww "+ err); return next(err); }
+      console.log("kaha h error" + user)
+      return res.redirect('/seller/upload');
+    });
+  })(req, res, next);
+});
 
 router.post('/upload', upload.single('avatar'), function(req,res,next){
   console.log("give me sunshine")

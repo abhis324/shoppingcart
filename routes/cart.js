@@ -40,7 +40,12 @@ router.get('/', (req,res)=> {
 //   //expected output: 123
 // });
 // g().then(function(result){console.log("done")})
-g().then((val) => { console.log("fulfilled:", val, prods.length) ; res.render('pages/cart', {totalPrice: totalPrice , products: prods});},
+g().then((val) => { console.log("fulfilled:", val, prods.length) ;
+  if (req.session.passport)
+  {res.render('pages/cart', {user: req.session.passport.username, totalPrice: totalPrice , products: prods});}
+  else{
+    res.render('pages/cart', {user: "User", totalPrice: totalPrice , products: prods});
+  }},
        (err) => console.log("rejected: ", err));
 //res.send("fsld")
 //   g().then((result)=>{resolve(prods);console.log("fdf")});
@@ -54,7 +59,7 @@ g().then((val) => { console.log("fulfilled:", val, prods.length) ; res.render('p
   // f().then((result)=>{console.log(prods.length + "here is the prods");res.send(prods)})
 }
   else {
-    res.send("You have one product in cart..try adding some more and come back and see")
+    res.send("You have no products in cart..try adding some and come back and se")
   }
   // }
   // await displayed()
