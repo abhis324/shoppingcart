@@ -88,6 +88,7 @@ app.use('/customer', customersRouter);
 app.use('/cart', cartRouter);
 
 app.use(function(err,req,res,next){
+	console.log("initialising session ")
 	res.locals.session = req.session
 	if (!req.session.cart){
 		req.session.cart = [];
