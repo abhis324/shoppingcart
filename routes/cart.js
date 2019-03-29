@@ -8,6 +8,7 @@ var Product = require('../models/product')
 router.get('/', (req,res)=> {
   if (req.session.cart){
   //console.log(req.session.cart)
+  console.log("cart is here " , req.session.cart)
   var x = req.session.cart;
   var prods = [];
   var totalPrice = 0;

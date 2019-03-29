@@ -37,7 +37,7 @@ async function findSpecifics(products)
     obj.electronics = products.filter(obj => obj.category == 'electronics');
     obj.clothes = products.filter(obj => obj.category == 'clothes');
     obj.eatables = products.filter(obj => obj.category == 'eatables');
-    console.log(obj.electronics)
+    //console.log(obj.electronics)
     resolve(obj);
 
   })
@@ -50,6 +50,10 @@ router.get('/', async function(req, res, next) {
     let products = await findProds();
     let eatables = await findSpecifics(products);
     console.log("here is the eatables ", eatables);
+    if (req.session.cart)
+    {
+      console.log(req.session.cart)
+    }
     if (req.session.passport)
     {
       console.log(req.session.passport.user)

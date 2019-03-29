@@ -60,14 +60,15 @@
             // tobeupdated = data.data.quantity - quantity;
             // console.log(quantity + " is the quantity")
             // console.log(ele.children[5].textContent)
+            console.log( data.data, data.data[0].cartproductid)
             var temp = parseInt(ele.children[4].textContent.split('Quantity Available: ')[1])
             // console.log(typeof ele.children[5].textContent.split('Quantity Available: ')[1] )
             var temp = temp- quantity;
-            console.log("temp " + typeof temp)
+
             if (temp > 0)
             {
               ele.children[4].innerHTML = "<p>Quantity Available: "+temp+"</p>"
-              console.log(ele.children[4].nodeName);
+              //console.log(ele.children[4].nodeName);
             }
             else if(temp < 0)
               {

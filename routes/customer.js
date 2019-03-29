@@ -61,10 +61,10 @@ router.post('/fetchdata', (req,res)=>{
       category: req.body.params.obj.category,
       quantity: Number(req.body.params.obj.quantity)
     })
-    console.log("yelo cart" , cartObj);
+    //console.log("yelo cart" , cartObj);
     // console.log(req.session)
     let promise = new Promise(function(resolve,reject){
-              console.log(req.session , " is here")
+              console.log("req.session ", req.session)
               if (req.session.cart)
               {
                 if (req.session.cart.find(obj => obj.cartproductid == cartObj.cartproductid))
@@ -105,8 +105,7 @@ router.post('/fetchdata', (req,res)=>{
     Product.findOne({_id: req.body.params.obj.id }).then(async function (result){
         result.quantity = result.quantity - req.body.params.obj.quantity;
         req.session.totalCount += req.body.params.obj.quantity*req.body.params.obj.price;
-        await result.save()
-      console.log("after" + result.quantity)},
+        await result.save() },
         (err)=> {throw err;})
     // await Product.findOne({_id: req.body.params.obj.id }).then((result)=>{},
     //     (err)=> {throw err;})
@@ -121,15 +120,14 @@ router.post('/fetchdata', (req,res)=>{
   {
     await Product.find({}, function(err, docs) {
     if (!err){
-        console.log(docs);
+        //console.log(docs);
         products = docs;
-        req.session.views = products.length;
     } else {throw err;}
 });
 }
   saved().then(function(err,result){
     updated().then((res)=> { console.log("updated")})
-    res.send("saved successfully");
+    res.send(req.session.cart);
   })
 })
 
