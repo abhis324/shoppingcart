@@ -7,16 +7,6 @@ var async = require('async')
 var passport = require('passport')
 var Product = require('../models/product')
 
-// process.env.PWD = process.cwd()
-
-//app.use(express.static(__dirname + 'uploads'));
-
-//app.use('/static', express.static(path.join(__dirname, 'uploads')))
-
-/* GET home page. */
-
-//var products = []
-
 router.get('/ordered', (req,res)=>{
   res.redirect('/')
   req.session.destroy(function(err,result){
@@ -24,44 +14,51 @@ router.get('/ordered', (req,res)=>{
   })
 })
 
-router.get('/', function(req, res, next) {
-  var products;
-  //console.log(mongoose.connection)
-  //res.send("helloe")
-  async function findProds()
-  {
-    await Product.find({}, function(err, docs) {
-    if (!err){
-        console.log(docs);
-        products = docs;
-        // req.session.views = products.length;
-        console.log(req.session)
-        //console.log(mongoose.connection)
-        // process.exit()
-    } else {throw err;}
+async function findProds()
+{
+  let promise = Product.find({}, function(err, docs) {
+  if (!err){
+      return docs
+  }
+  else{throw err}
 });
+  await promise
+  //console.log("ok now it is done");
+  return promise;
 }
-  findProds().then(function(result,err){
-    //res.send(products)
-    // if (!passport.user)
-    // {
-    //     res.render('pages/index', {user: passport.user.username, products: products});
-    // }
-    // else {
-    //req.session.destroy(function(result){console.log("destroued")})
+
+async function findSpecifics(products)
+{
+  let promise = new Promise(function(resolve,reject){
+
+    var obj = { eatables:[], electronics:[], books:[], clothes:[] };
+    //console.log(products.filter(product => product.category == 'electronics'));
+    obj.books = products.filter(obj => obj.category == 'books');
+    obj.electronics = products.filter(obj => obj.category == 'electronics');
+    obj.clothes = products.filter(obj => obj.category == 'clothes');
+    obj.eatables = products.filter(obj => obj.category == 'eatables');
+    console.log(obj.electronics)
+    resolve(obj);
+
+  })
+  await promise
+  return promise
+}
+
+router.get('/', async function(req, res, next) {
+
+    let products = await findProds();
+    let eatables = await findSpecifics(products);
+    console.log("here is the eatables ", eatables);
     if (req.session.passport)
     {
       console.log(req.session.passport.user)
-        res.render('pages/index', {user: req.session.passport.user.username, products: products});
+        res.render('pages/index', {user: req.session.passport.user.username, products: eatables});
     }
     else {
       console.log("no passport")
-      res.render('pages/index', {user: "User", products: products});
+      res.render('pages/index', {user: "User", products: eatables});
     }
-  })
-  // async function found(){
-  //   let promise = await Product.
-  // }
 
 });
 

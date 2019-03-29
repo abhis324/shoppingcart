@@ -195,7 +195,6 @@ router.post('/signup', async (req,res,next) => {
               if (!err){
                   console.log(docs);
                   products = docs;
-                  req.session.views = products.length;
               } else {throw err;}
             });
             }

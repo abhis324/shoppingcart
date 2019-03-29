@@ -11,10 +11,12 @@
   var count = 0;
     function buy(a){
       quantity = prompt("How many do u want?", 1);
+      console.log(document.getElementById(a).nodeName)
       var ele = document.getElementById(a).children[0].children[1];
-      var maxAmount = parseInt(ele.children[5].textContent.split('Quantity Available: ')[1])
-      //console.log(tty)
-      if (quantity == 0)
+      var maxAmount = parseInt(ele.children[4].textContent.split('Quantity Available: ')[1])
+      // console.log(maxAmount)
+      // console.log(typeof quantity, Number)
+      if (quantity <= 0)
       {
         alert("just say u don't want it")
         return;
@@ -51,7 +53,6 @@
             productName : x[0],
             productDescription: x[1],
             price: x[2].split('Price: ')[1],
-            category : x[3],
             quantity: quantity
           }
           axios.post('/customer/fetchdata', { params: { obj }} ).then((data)=>{
@@ -59,18 +60,18 @@
             // tobeupdated = data.data.quantity - quantity;
             // console.log(quantity + " is the quantity")
             // console.log(ele.children[5].textContent)
-            var temp = parseInt(ele.children[5].textContent.split('Quantity Available: ')[1])
+            var temp = parseInt(ele.children[4].textContent.split('Quantity Available: ')[1])
             // console.log(typeof ele.children[5].textContent.split('Quantity Available: ')[1] )
             var temp = temp- quantity;
-            // console.log("temp " + typeof temp)
+            console.log("temp " + typeof temp)
             if (temp > 0)
             {
-              ele.children[5].innerHTML = "<p>Quantity Available: "+temp+"</p>"
-              console.log(ele.children[5].nodeName);
+              ele.children[4].innerHTML = "<p>Quantity Available: "+temp+"</p>"
+              console.log(ele.children[4].nodeName);
             }
-            else
+            else if(temp < 0)
               {
-                ele.children[5].innerHTML = "<p>Currently Unavailable</p>"
+                ele.children[4].innerHTML = "<p>Currently Unavailable</p>"
               }
           })
         }
@@ -85,88 +86,100 @@
 <!-- Page Content -->
 <h5>Welcome <%= user %></h5>
 <div class="container">
-
-  <h4 class="font-weight-light text-center text-lg-left mt-4 mb-0">Products available</h4>
-  <hr class="mt-2 mb-5">
-
+<hr class="mt-2 mb-5">
+  <h4 class="font-weight-light text-center text-lg-left mt-4 mb-0" id="electronics">Electronics</h4>
+  <% if ( products.electronics.length > 0 ) { %>
   <div class="row text-center text-lg-left">
-    <% products.forEach(function(product){ %>
-    <div class="col-lg-3 col-md-4 col-6" id="<%= product._id.toString() %>">
+    <% products.electronics.forEach(function(prod){ %>
+    <div class="col-lg-3 col-md-4 col-6" id="<%= prod._id.toString() %>">
       <i class="d-block mb-4 h-100">
-            <img class="img-fluid img-thumbnail" src="/images/<%= product.imagePath %>">
+            <img class="img-fluid img-thumbnail" src="/images/<%= prod.imagePath %>">
             <div class="productview">
-              <br><p><%= product.productName %></p>
-              <p><%= product.productDescription %></p>
-              <p>Price: <%= product.price %></p>
-              <p><%= product.category %></p>
-              <%if ( product.quantity > 0 ) { %>
-                <p>Quantity Available: <%= product.quantity %></p>
+              <br><p><%= prod.productName %></p>
+              <p><%= prod.productDescription %></p>
+              <p>Price: <%= prod.price %></p>
+              <%if ( prod.quantity > 0 ) { %>
+                <p>Quantity Available: <%= prod.quantity %></p>
                 <button type="button" class="btn btn-primary btn-sm" onclick="buy(this.parentNode.parentNode.parentNode.id)">Buy this</button>
               <% } else{ %>
                   <p>Currently Unavailable</p>
               <% } %>
-            </div>
-          </i>
+          </div>
+      </i>
     </div>
   <% })%>
-    <!-- <div class="col-lg-3 col-md-4 col-6">
-      <a href="#" class="d-block mb-4 h-100">
-            <img class="img-fluid img-thumbnail" src="https://source.unsplash.com/aob0ukAYfuI/400x300" alt="">
-          </a>
-    </div>
-    <div class="col-lg-3 col-md-4 col-6">
-      <a href="#" class="d-block mb-4 h-100">
-            <img class="img-fluid img-thumbnail" src="https://source.unsplash.com/EUfxH-pze7s/400x300" alt="">
-          </a>
-    </div>
-    <div class="col-lg-3 col-md-4 col-6">
-      <a href="#" class="d-block mb-4 h-100">
-            <img class="img-fluid img-thumbnail" src="https://source.unsplash.com/M185_qYH8vg/400x300" alt="">
-          </a>
-    </div>
-    <div class="col-lg-3 col-md-4 col-6">
-      <a href="#" class="d-block mb-4 h-100">
-            <img class="img-fluid img-thumbnail" src="https://source.unsplash.com/sesveuG_rNo/400x300" alt="">
-          </a>
-    </div>
-    <div class="col-lg-3 col-md-4 col-6">
-      <a href="#" class="d-block mb-4 h-100">
-            <img class="img-fluid img-thumbnail" src="https://source.unsplash.com/AvhMzHwiE_0/400x300" alt="">
-          </a>
-    </div>
-    <div class="col-lg-3 col-md-4 col-6">
-      <a href="#" class="d-block mb-4 h-100">
-            <img class="img-fluid img-thumbnail" src="https://source.unsplash.com/2gYsZUmockw/400x300" alt="">
-          </a>
-    </div>
-    <div class="col-lg-3 col-md-4 col-6">
-      <a href="#" class="d-block mb-4 h-100">
-            <img class="img-fluid img-thumbnail" src="https://source.unsplash.com/EMSDtjVHdQ8/400x300" alt="">
-          </a>
-    </div>
-    <div class="col-lg-3 col-md-4 col-6">
-      <a href="#" class="d-block mb-4 h-100">
-            <img class="img-fluid img-thumbnail" src="https://source.unsplash.com/8mUEy0ABdNE/400x300" alt="">
-          </a>
-    </div>
-    <div class="col-lg-3 col-md-4 col-6">
-      <a href="#" class="d-block mb-4 h-100">
-            <img class="img-fluid img-thumbnail" src="https://source.unsplash.com/G9Rfc1qccH4/400x300" alt="">
-          </a>
-    </div>
-    <div class="col-lg-3 col-md-4 col-6">
-      <a href="#" class="d-block mb-4 h-100">
-            <img class="img-fluid img-thumbnail" src="https://source.unsplash.com/aJeH0KcFkuc/400x300" alt="">
-          </a>
-    </div>
-    <div class="col-lg-3 col-md-4 col-6">
-      <a href="#" class="d-block mb-4 h-100">
-            <img class="img-fluid img-thumbnail" src="https://source.unsplash.com/p2TQ-3Bh3Oo/400x300" alt="">
-          </a>
-    </div>
-  </div> -->
-
 </div>
+<% } %>
+<h4 class="font-weight-light text-center text-lg-left mt-4 mb-0" id="clothes">Clothes</h4>
+<%if ( products.clothes.length > 0 ) { %>
+<div class="row text-center text-lg-left">
+  <% products.clothes.forEach(function(prod){ %>
+  <div class="col-lg-3 col-md-4 col-6" id="<%= prod._id.toString() %>">
+    <i class="d-block mb-4 h-100">
+          <img class="img-fluid img-thumbnail" src="/images/<%= prod.imagePath %>">
+          <div class="productview">
+            <br><p><%= prod.productName %></p>
+            <p><%= prod.productDescription %></p>
+            <p>Price: <%= prod.price %></p>
+            <%if ( prod.quantity > 0 ) { %>
+              <p>Quantity Available: <%= prod.quantity %></p>
+              <button type="button" class="btn btn-primary btn-sm" onclick="buy(this.parentNode.parentNode.parentNode.id)">Buy this</button>
+            <% } else{ %>
+                <p>Currently Unavailable</p>
+            <% } %>
+          </div>
+        </i>
+  </div>
+<% })%>
+</div>
+<% } %>
+<h4 class="font-weight-light text-center text-lg-left mt-4 mb-0" id="books">Books</h4>
+<%if ( products.clothes.length > 0 ) { %>
+<div class="row text-center text-lg-left">
+  <% products.books.forEach(function(prod){ %>
+  <div class="col-lg-3 col-md-4 col-6" id="<%= prod._id.toString() %>">
+    <i class="d-block mb-4 h-100">
+          <img class="img-fluid img-thumbnail" src="/images/<%= prod.imagePath %>">
+          <div class="productview">
+            <br><p><%= prod.productName %></p>
+            <p><%= prod.productDescription %></p>
+            <p>Price: <%= prod.price %></p>
+            <%if ( prod.quantity > 0 ) { %>
+              <p>Quantity Available: <%= prod.quantity %></p>
+              <button type="button" class="btn btn-primary btn-sm" onclick="buy(this.parentNode.parentNode.parentNode.id)">Buy this</button>
+            <% } else{ %>
+                <p>Currently Unavailable</p>
+            <% } %>
+          </div>
+        </i>
+  </div>
+<% })%>
+</div>
+<% } %>
+<h4 class="font-weight-light text-center text-lg-left mt-4 mb-0" id="eatables">Eatables</h4>
+<%if ( products.eatables.length > 0 ) { %>
+<div class="row text-center text-lg-left">
+  <% products.eatables.forEach(function(prod){ %>
+  <div class="col-lg-3 col-md-4 col-6" id="<%= prod._id.toString() %>">
+    <i class="d-block mb-4 h-100">
+          <img class="img-fluid img-thumbnail" src="/images/<%= prod.imagePath %>">
+          <div class="productview">
+            <br><p><%= prod.productName %></p>
+            <p><%= prod.productDescription %></p>
+            <p>Price: <%= prod.price %></p>
+            <%if ( prod.quantity > 0 ) { %>
+              <p>Quantity Available: <%= prod.quantity %></p>
+              <button type="button" class="btn btn-primary btn-sm" onclick="buy(this.parentNode.parentNode.parentNode.id)">Buy this</button>
+            <% } else{ %>
+                <p>Currently Unavailable</p>
+            <% } %>
+          </div>
+        </i>
+  </div>
+<% })%>
+</div>
+<% } %>
+
 </div>
 <!-- /.container -->
 </body>

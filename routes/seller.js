@@ -50,7 +50,7 @@ router.post('/login', function(req, res, next) {
   passport.authenticate('local', function(err, user, info) {
     console.log("wow")
     if (err) { console.log("err woww ") ; return next(err); }
-    if (!user) { return res.redirect('/seller'); }
+    if (!user) { console.log("user not here"); return res.redirect('/seller'); }
     req.logIn(user, function(err) {
       if (err) {console.log("errrrr wwwww "+ err); return next(err); }
       console.log("kaha h error" + user)
@@ -112,39 +112,36 @@ router.post('/upload', upload.single('avatar'), function(req,res,next){
 
 router.post('/signup', (req,res,next) => {
 
-  bcrypt.genSalt(10, function(err, salt) {
+  bcrypt.hash(req.body.password, 10, function(err, hash) {
 
-    		bcrypt.hash(req.body.password, salt, function(err, hash) {
+      console.log(hash+" signup " + req.body.password)
+      var newSeller;
+      async function saved()
+      {
+          // console.log(newCustomer)
+          //console.log("g m h" + x + p)
+          newSeller = new Seller({
+                sellerName : req.body.name,
+                sellerMail: req.body.email,
+                sellerPassword : hash,
+                sellerContact: req.body.contact
+         })
 
-    				// console.log(req.body)
-    				// console.log(hash)
-    var newSeller;
-		async function saved()
-    {
-        // console.log(newCustomer)
-        //console.log("g m h" + x + p)
-        newSeller = new Seller({
-              sellerName : req.body.name,
-              sellerMail: req.body.email,
-              sellerPassword : hash,
-              sellerContact: req.body.contact
-       })
-
-        let promise = await newSeller.save(function(err){
-	    					if (err)
-	    						throw err
-	    					else
-                {
-                  //resolve(1);
-                  console.log("seller saved successfully")
-                }
-	    				})
-        return promise;
-    }
+          let promise = await newSeller.save(function(err){
+                  if (err)
+                    throw err
+                  else
+                  {
+                    //resolve(1);
+                    console.log("seller saved successfully")
+                  }
+                })
+          return promise;
+      }
         saved().then(function(result,err){
           res.render('pages/seller', {user: req.body.name});
         }).catch(err => console.log("error"));
       })
-    })})
+  })
 
 module.exports = router;
