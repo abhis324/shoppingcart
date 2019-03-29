@@ -44,7 +44,7 @@ app.use(express.urlencoded({ extended: false }));
 app.use(cookieParser());
 var sess = {
 	genid: function(req) {
-	return (Math.random()*4500+1).toString()+"ajdi"},
+	return (Math.random()*4500+1).toString()+"uenai"},
   secret: 'keyboard cat',
   resave: false,
   saveUninitialized: true,
@@ -81,12 +81,6 @@ const Orders = require('./models/orders')
 const Product = require('./models/product')
 
 ///
-
-app.use('/', indexRouter);
-app.use('/seller', sellersRouter);
-app.use('/customer', customersRouter);
-app.use('/cart', cartRouter);
-
 app.use(function(err,req,res,next){
 	console.log("initialising session ")
 	res.locals.session = req.session
@@ -97,8 +91,19 @@ app.use(function(err,req,res,next){
 	{
 		req.session.username = {name:"User", type:"User"}
 	}
+	if (!req.session.totalCount)
+	{
+		req.session.totalCount = 0;
+	}
 	next();
 })
+
+app.use('/', indexRouter);
+app.use('/seller', sellersRouter);
+app.use('/customer', customersRouter);
+app.use('/cart', cartRouter);
+
+
 // catch 404 and forward to error handler
 
 app.use(function(req, res, next) {

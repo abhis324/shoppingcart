@@ -61,42 +61,33 @@ router.post('/fetchdata', (req,res)=>{
       category: req.body.params.obj.category,
       quantity: Number(req.body.params.obj.quantity)
     })
-    console.log("yelo cart" , cartObj);
-    // console.log(req.session)
-    let promise = new Promise(function(resolve,reject){
-              console.log(req.session , " is here")
+    console.log(cartObj);
+    let promise = await cartObj.save(function(err){
+  					if (err)
+  						throw err
+  					else
+            {
+              //resolve(1);
               if (req.session.cart)
               {
-                if (req.session.cart.find(obj => obj.cartproductid == cartObj.cartproductid))
-                {
-                  req.session.cart.find(obj => obj.cartproductid == cartObj.cartproductid).quantity += cartObj.quantity;
-                  req.session.totalCount += cartObj.quantity*cartObj.price;
-                  req.session.save(function(err){if(err) throw err;})
-                  resolve(1);
-                }
-                else
-                {
-                  req.session.cart.push(cartObj);
-                  req.session.totalCount += Number(req.body.params.obj.quantity)*Number(req.body.params.obj.price);
-                  console.log(req.session.totalCount)
-                  console.log("ye wala " + req.session.cart)
-                  req.session.save(function(err){if(err) throw err;})
-                  console.log(req.session);
-                  resolve(1);
-                }
+                req.session.cart.push(req.body.params.obj.id);
+                req.session.totalCount += Number(req.body.params.obj.quantity)*Number(req.body.params.obj.price);
+                console.log(req.session.totalCount)
+                console.log("ye wala " + req.session.cart)
+                req.session.save(function(err){if(err) throw err;})
+                console.log(req.session);
               }
               else {
                 req.session.cart = [];
-                req.session.cart.push(cartObj);
-                req.session.totalCount = Number(req.body.params.obj.quantity)*Number(req.body.params.obj.price);
+                req.session.cart.push(req.body.params.obj.id);
+                req.session.totalCount += Number(req.body.params.obj.quantity)*Number(req.body.params.obj.price);
                 console.log(req.session.totalCount)
                 console.log("pehli baar")
                 req.session.save(function(err){if(err) throw err;})
                 console.log(req.session);
-                resolve(1);
               }
-              console.log("added to cart successfully "+req.session.cart)
-            // }
+              console.log("added to cart successfully"+req.session.cart)
+            }
   				})
     return promise;
   }

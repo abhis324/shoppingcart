@@ -2,7 +2,7 @@ const mongoose = require('mongoose')
 const Schema = mongoose.Schema
 const bcrypt = require('bcryptjs')
 
-const CartSchema = new Schema({
+const CSchema = new Schema({
   cartproductid: {type:String, required: true},
   productName: {type: String, required: true},
   productDescription: {type: String, required: true},
@@ -11,6 +11,11 @@ const CartSchema = new Schema({
   quantity: {type: Number, required: true}
 })
 
-const Cart = mongoose.model('cart', CartSchema)
+const CartSchema = new Schema({
+  customerid: {type:String, required: true},
+  product: [CSchema]
+})
+
+const Cart = mongoose.model('cart', CSchema)
 
 module.exports = Cart

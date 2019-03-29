@@ -7,7 +7,7 @@ var Product = require('../models/product')
 
 router.get('/', (req,res)=> {
   if (req.session.cart){
-  console.log(req.session.cart)
+  //console.log(req.session.cart)
   var x = req.session.cart;
   var prods = [];
   var totalPrice = 0;
@@ -21,16 +21,30 @@ router.get('/', (req,res)=> {
       {
         // if (i == x.length-1)
         // {return resolve(1)};
-        Product.findOne({_id: x[i]}).then(function(result){
-          prods.push(result)
-          console.log(result+" this one " , prods.length)
-          totalPrice += result.price;
+        //req.session.cart.find(obj => obj._id == result._id.toString())
+        Product.findOne({_id: x[i].cartproductid}).then(function(result){
+          var prodobj = {
+            id: result._id.toString(),
+            imagePath: result.imagePath,
+            productName: result.productName,
+            productDescription: result.productDescription,
+            price: result.price,
+            category: result.category,
+            quantity: req.session.cart.find(obj => obj.cartproductid == result._id.toString()).quantity
+          }
+          var str = result._id.toString();
+          //console.log(req.session.cart, "x[i] h");
+          // console.log('\nwow\n')
+          // console.log(prodobj, "result h\n");
+          // console.log(req.session.cart.find(obj => obj.cartproductid === str), str);
+          //console.log(req.session.cart.find(obj => obj._id == result._id.toString()))
+          prods.push(prodobj)
+          //console.log(result+" this one " , prods)
           if (prods.length == x.length)
           {return resolve(1)};
         })
       }
     })
-    console.log(promise)
     return promise
   }catch(err){console.log(err);error(err)}}
 //   var promise1 = g().resolve(1)
@@ -42,9 +56,10 @@ router.get('/', (req,res)=> {
 // g().then(function(result){console.log("done")})
 g().then((val) => { console.log("fulfilled:", val, prods.length) ;
   if (req.session.passport)
-  {res.render('pages/cart', {user: req.session.passport.username, totalPrice: totalPrice , products: prods});}
+  { console.log(req.session.totalCount);
+    res.render('pages/cart', {user: req.session.passport.username, totalPrice: req.session.totalCount , products: prods} ); }
   else{
-    res.render('pages/cart', {user: "User", totalPrice: totalPrice , products: prods});
+    res.render('pages/cart', {user: "User", totalPrice: req.session.totalCount , products: prods});
   }},
        (err) => console.log("rejected: ", err));
 //res.send("fsld")
@@ -69,4 +84,15 @@ g().then((val) => { console.log("fulfilled:", val, prods.length) ;
   // res.send("hello world");
 })
 
+router.get('/now',async (req,res) => {
+  console.log(req.session.cart[0].cartproductid)
+  let promise = new Promise(function(resolve,reject){
+    Product.findOne({_id: req.session.cart[0].cartproductid}).then(function(result){
+      console.log(result+" this one ")
+      if (req.session.cart.length == 1)
+      {return resolve(1)};
+    })
+  })
+  promise.then(function(result){res.send("good")})
+})
 module.exports = router

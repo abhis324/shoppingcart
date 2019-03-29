@@ -34,8 +34,9 @@ router.get('/', function(req, res, next) {
     if (!err){
         console.log(docs);
         products = docs;
-        req.session.views = products.length;
+        // req.session.views = products.length;
         console.log(req.session)
+        //console.log(mongoose.connection)
         // process.exit()
     } else {throw err;}
 });
@@ -47,6 +48,7 @@ router.get('/', function(req, res, next) {
     //     res.render('pages/index', {user: passport.user.username, products: products});
     // }
     // else {
+    //req.session.destroy(function(result){console.log("destroued")})
     if (req.session.passport)
     {
       console.log(req.session.passport.user)

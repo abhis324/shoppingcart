@@ -12,7 +12,7 @@
 
     <div class="row text-center text-lg-left">
       <% products.forEach(function(product){ %>
-      <div class="col-lg-3 col-md-4 col-6" id="<%= product._id.toString() %>">
+      <div class="col-lg-3 col-md-4 col-6" id="<%= product.id %>">
         <i class="d-block mb-4 h-100">
               <img class="img-fluid img-thumbnail" src="/images/<%= product.imagePath %>">
               <div class="productview">
@@ -20,7 +20,7 @@
                 <p><%= product.productDescription %></p>
                 <p>Price: <%= product.price %></p>
                 <p><%= product.category %></p>
-                <p>Quantity: 1</p>
+                <p>Quantity: <%= product.quantity %></p>
               </div>
             </i>
       </div>
